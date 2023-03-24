@@ -16,6 +16,12 @@ build_macos:
 	cp src/platform/icon.png _output/macos/icon.png
 	go run bin/package_macos.go -outdir _output/macos -version "$(VERSION)"
 
+build_macos_arm:
+	mkdir -p _output/macos_arm
+	OOS=darwin GOARCH=arm64 go build -tags "sqlite_foreign_keys release macos" -ldflags="$(GO_LDFLAGS)" -o _output/macos_arm/yarr src/main.go
+	cp src/platform/icon.png _output/macos_arm/icon.png
+	go run bin/package_macos.go -outdir _output/macos_arm -version "$(VERSION)"
+
 build_linux:
 	mkdir -p _output/linux
 	GOOS=linux GOARCH=amd64 go build -tags "sqlite_foreign_keys release linux" -ldflags="$(GO_LDFLAGS)" -o _output/linux/yarr src/main.go
